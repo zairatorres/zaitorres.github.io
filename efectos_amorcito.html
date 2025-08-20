@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wedding Invitation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1:#fff8f3; /* blush */
+      --bg2:#f1f4ff; /* soft periwinkle */
+      --card:#ffffff;
+      --ink:#1f2a37;
+      --muted:#6b7280;
+      --accent:#8b5cf6; /* lavender */
+      --accent-2:#f59e0b; /* marigold */
+      --ring: rgba(139,92,246,.35);
+    }
+
+    html, body { height: 100%; }
+    body{
+      margin:0; color:var(--ink); font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 700px at 15% 0%, var(--bg2), transparent 60%),
+                  radial-gradient(1200px 700px at 85% 100%, var(--bg1), transparent 60%),
+                  linear-gradient(135deg, #fafafa, #fff);
+    }
+
+    .wrap{ min-height:100%; display:grid; place-items:center; padding: 36px 16px; }
+
+    .card{
+      width: min(720px, 92vw);
+      background: var(--card);
+      border-radius: 28px;
+      box-shadow: 0 10px 40px rgba(17, 24, 39, .12), 0 2px 10px rgba(17, 24, 39, .06);
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(17,24,39,.06);
+      isolation: isolate;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 1.6s ease-out forwards;
+    }
+    @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      }
+    }
+
+    .ribbon{ position:absolute; inset:0; pointer-events:none; }
+    .ribbon svg{ position:absolute; width: 220px; opacity:.25; }
+    .ribbon .top-left{ top:-40px; left:-40px; transform: rotate(-10deg); }
+    .ribbon .bottom-right{ right:-40px; bottom:-40px; transform: rotate(15deg); }
+
+    header{
+      text-align:center;
+      padding: 40px 28px 16px;
+      position: relative;
+    }
+    .eyebrow{
+      letter-spacing:.28em; text-transform:uppercase; font-weight:600; font-size:.78rem; color:var(--accent);
+    }
+    .names{
+      font-family: "Cormorant Garamond", serif; font-weight:700; font-size: clamp(2.2rem, 6vw, 3.2rem);
+      letter-spacing:.02em; line-height:1.05; margin: 8px 0 4px;
+      position: relative;
+      animation: shimmer 2s ease-in-out infinite;
+    }
+    @keyframes shimmer {
+    0%, 100% {
+      text-shadow: 0 0 10px rgba(245,158,11,0.5), 0 0 20px rgba(139,92,246,0.3);
+    }
+    50% {
+      text-shadow: 0 0   0 0 10px rgba(245,158,11,0.6), 0 0 20px rgba(245,158,11,0.4), 0 0 30px rgba(139,92,246,0.4), 0 0 40px rgba(139,92,246,0.2);
+    }
+  }
+    .amp{ color: var(--accent-2); font-weight: 700; padding: 0 .15em; }
+    .tagline{ color: var(--muted); font-size: 1rem; margin-top: 8px; }
+
+    .hero{
+      display:grid; grid-template-columns: 1.15fr .85fr; gap: 0; align-items: stretch;
+      border-top:1px solid rgba(17,24,39,.06); border-bottom:1px solid rgba(17,24,39,.06);
+      background: linear-gradient(180deg, rgba(139,92,246,.06), rgba(245,158,11,.06));
+    }
+    .hero .info{ padding: 28px; }
+    .hero .photo{
+      min-height: 280px; overflow:hidden; position:relative;
+    }
+    .hero .photo img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+    .grid{ display:grid; gap:20px; padding: 28px; grid-template-columns: repeat(3, 1fr); }
+    .tile{
+      background: #fff; border-radius: 18px; padding: 18px; border:1px solid rgba(17,24,39,.06);
+      box-shadow: 0 2px 10px rgba(17,24,39,.04);
+    }
+    .tile h3{ margin:0 0 6px; font-size:.95rem; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
+    .tile p{ margin: 2px 0; font-size: 1.02rem; }
+
+    .center{ text-align:center; }
+
+    .btnrow{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin: 12px 0 4px; }
+    .btn{
+      --bg: var(--accent); --fg: #fff; --bd: transparent;
+      appearance:none; border:1px solid var(--bd); background:var(--bg); color:var(--fg);
+      padding: 12px 16px; border-radius: 12px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+      box-shadow: 0 6px 20px var(--ring);
+    }
+    .btn.secondary{ --bg:#fff; --fg:var(--ink); --bd: rgba(17,24,39,.1); box-shadow:none; }
+    .btn:focus-visible{ outline: 2px solid var(--accent); outline-offset:3px; }
+
+    .countdown{ font-variant-numeric: tabular-nums; font-size: clamp(1rem, 2.6vw, 1.25rem); color:var(--muted); }
+
+    footer{ text-align:center; padding: 8px 24px 28px; color: var(--muted); }
+
+    /* Subtle petals animation */
+    .petal{ position:absolute; top:-20px; width:10px; height:16px; background: radial-gradient(circle at 30% 30%, #fff 0 30%, #f3d2e9 31% 100%);
+      border-radius: 60% 60% 60% 60%/70% 70% 40% 40%; opacity:.55; filter: blur(.3px); pointer-events:none; }
+    @keyframes fall { to { transform: translateY(120vh) rotate(200deg); opacity:.1; } }
+
+    /* Print styles */
+    @media print{
+      body{ background:#fff; }
+      .card{ box-shadow:none; border: none; }
+      .hero{ background: none; border: none; }
+      .ribbon, .petal, .btnrow, .countdown{ display:none !important; }
+      .grid{ grid-template-columns: 1fr 1fr; }
+    }
+
+    /* Responsive */
+    @media (max-width: 820px){
+      .hero{ grid-template-columns: 1fr; }
+      .hero .photo{ order:-1; height: 240px; }
+      .grid{ grid-template-columns: 1fr; }
+    }
+        #sparkle-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    .sparkle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: radial-gradient(circle, gold 0%, transparent 70%);
+      border-radius: 50%;
+      animation: fall 1s ease-out forwards;
+      opacity: 0.8;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(50px);
+        opacity: 0;
+      }
+    }
+        body {
+      background: radial-gradient(ellipse at center, #1a1a2e 0%, #000 100%);
+      overflow: hidden;
+    }
+
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 2s infinite ease-in-out;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 1; }
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(120deg, #fbcfe8, #c4b5fd, #a5f3fc);
+      opacity: 0.2;
+      animation: aurora 10s ease-in-out infinite;
+      z-index: -1;
+    }
+/* 🌌 Fin de la sección: Aurora Boreal - Fondo animado */
+
+    @keyframes aurora {
+      0% { transform: translateX(0); }
+      50% { transform: translateX(20px); }
+      100% { transform: translateX(0); }
+    }
+  </style>
+</head>
+<body>
+  <!-- 🔧 QUICK EDIT: Change details here or in the INVITE object below -->
+  <div class="wrap">
+    <article class="card" aria-labelledby="title">
+      <div class="ribbon" aria-hidden="true">
+        <!-- decorative corner florals -->
+        <svg class="top-left" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 120c20-50 60-76 120-90" stroke="#8b5cf6" stroke-opacity=".35" stroke-width="2"/>
+          <path d="M36 98c10-20 28-30 60-38" stroke="#f59e0b" stroke-opacity=".35" stroke-width="2"/>
+          <circle cx="40" cy="100" r="6" fill="#f59e0b" fill-opacity=".15"/>
+          <circle cx="70" cy="70" r="8" fill="#8b5cf6" fill-opacity=".15"/>
+        </svg>
+        <svg class="bottom-right" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M180 80c-20 50-60 76-120 90" stroke="#8b5cf6" stroke-opacity=".35" stroke-width="2"/>
+          <path d="M164 102c-10 20-28 30-60 38" stroke="#f59e0b" stroke-opacity=".35" stroke-width="2"/>
+          <circle cx="160" cy="100" r="6" fill="#f59e0b" fill-opacity=".15"/>
+          <circle cx="130" cy="130" r="8" fill="#8b5cf6" fill-opacity=".15"/>
+        </svg>
+      </div>
+
+      <header>
+        <div class="eyebrow" aria-label="You're invited">ESTÁS INVITADO</div>
+        <h1 id="title" class="names">Nelly <span class="amp">&amp;</span> Yair</h1>
+        <p class="tagline">AAjoyfully invite you to celebrate their wedding</p>
+      </header>
+
+      <section class="hero" aria-label="Event details">
+        <div class="info">
+          <p class="center" style="margin:.25rem 0 .5rem; letter-spacing:.14em; text-transform:uppercase; color:var(--muted);">Ceremony &amp; Reception</p>
+          <h2 class="center" style="font-family:'Cormorant Garamond',serif; font-size:clamp(1.6rem,4.5vw,2.2rem); margin:.25rem 0 .75rem;">Saturday, December 20, 2025</h2>
+          <p class="center" style="margin:.25rem 0; font-size:1.1rem;">5:00 PM – 11:59 PM</p>
+          <p class="center" style="margin:.25rem 0 .75rem; font-size:1.1rem;">Hacienda Santa María • Mexico City</p>
+
+          <div class="countdown center" id="countdown" aria-live="polite">Loading countdown…</div>
+
+          <div class="btnrow" role="group" aria-label="Actions">
+            <a class="btn" id="rsvpBtn" href="#" target="_blank" rel="noopener">💌 RSVP</a>
+            <a class="btn secondary" id="mapBtn" href="#" target="_blank" rel="noopener">📍 Open in Maps</a>
+            <button class="btn secondary" id="icsBtn" type="button">🗓️ Add to Calendar</button>
+          </div>
+        </div>
+        <div class="photo" aria-hidden="true">
+          <!-- Replace the image src with your own photo (e.g., engagement photo). Free placeholder used below. -->
+          <img alt="" src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=1600&auto=format&fit=crop" />
+        </div>
+      </section>
+
+      <section class="grid" aria-label="More information">
+        <div class="tile">
+          <h3>Venue</h3>
+          <p id="venueName">Hacienda Santa María</p>
+          <p id="venueAddr">Av. de las Rosas 123, Mexico City</p>
+        </div>
+        <div class="tile">
+          <h3>Dress code</h3>
+          <p id="dress">Formal / Cocktail</p>
+          <p style="font-size:.95rem; color:var(--muted);">Soft pastels encouraged ✨</p>
+        </div>
+        <div class="tile">
+          <h3>Gifts</h3>
+          <p>Having you with us is the best gift.</p>
+          <p style="font-size:.95rem;">Registry: <a id="registryLink" href="#" target="_blank" rel="noopener">View registry</a></p>
+        </div>
+      </section>
+
+      <footer>
+        <p>Questions? <a id="emailLink" href="mailto:wedding@example.com">wedding@example.com</a></p>
+      </footer>
+
+      <!-- falling petals (decorative) -->
+      <div aria-hidden="true" id="petals"></div>
+      <audio id="musicaFondo" autoplay loop hidden>
+        <source src="https://dl.dropboxusercontent.com/scl/fi/4q3nwd4vgiy0e3dd5ddbe/Example.mp3?rlkey=mu12xt3l21f9biexx7bnv4sj8&st=iaw0vt63" type="audio/mpeg">
+    </audio>
+    </article>
+  </div>
+  <!-- ✨ Varita mágica: brillo que sigue al cursor -->
+  <div class="cursor-glow"></div>
+  <div id="sparkle-container"></div>
+      <script>
+    document.addEventListener("mousemove", (e) => {
+      const glow = document.querySelector(".cursor-glow");
+      glow.style.left = `${e.clientX}px`;
+      glow.style.top = `${e.clientY}px`;
+
+      // Crear chispa dorada
+      const sparkle = document.createElement("div");
+      sparkle.className = "sparkle";
+      sparkle.style.left = `${e.clientX}px`;
+      sparkle.style.top = `${e.clientY}px`;
+      document.getElementById("sparkle-container").appendChild(sparkle);
+
+      // Eliminar chispa después de 1 segundo
+      setTimeout(() => {
+        sparkle.remove();
+      }, 1000);
+    });
+  </script>
+  <script>
+  document.addEventListener("click", (e) => {
+    const note = document.createElement("div");
+    note.className = "note";
+    note.textContent = "♪";
+    note.style.left = `${e.clientX}px`;
+    note.style.top = `${e.clientY}px`;
+    document.body.appendChild(note);
+    setTimeout(() => note.remove(), 3000);
+  });
+</script>
+<script>
+  for (let i = 0; i < 100; i++) {
+    const star = document.createElement("div");
+    star.className = "star";
+    star.style.top = `${Math.random() * window.innerHeight}px`;
+    star.style.left = `${Math.random() * window.innerWidth}px`;
+    document.body.appendChild(star);
+  }
+</script>
+</body>
+
+  <script>
+    // ✍️ EDIT THESE DETAILS
+    const INVITE = {
+      couple: { a: "Avery", b: "Jordan" },
+      start: "2025-12-20T17:00:00",   // local date & time
+      end:   "2025-12-20T23:59:00",
+      venue: { name: "Hacienda Santa María", address: "Av. de las Rosas 123, Mexico City" },
+      dress: "Formal / Cocktail",
+      rsvp: {
+        url: "https://forms.gle/your-rsvp-form",      // ← replace with your form (Google Forms, Typeform, etc.)
+        email: "wedding@example.com"                   // fallback mailto
+      },
+      registry: "https://www.amazon.com/your-registry", // or leave as "" if none
+      timezone: "America/Mexico_City"
+    };
+
+    // Apply data to the page
+    document.querySelector('.names').innerHTML = `${INVITE.couple.a} <span class="amp">&amp;</span> ${INVITE.couple.b}`;
+    const dateFmt = new Date(INVITE.start).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    document.querySelector('.hero h2').textContent = dateFmt;
+    const timeStart = new Date(INVITE.start).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+    const timeEnd   = new Date(INVITE.end).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+    document.querySelectorAll('.hero p')[1].textContent = `${timeStart} – ${timeEnd}`;
+    document.getElementById('venueName').textContent = INVITE.venue.name;
+    document.getElementById('venueAddr').textContent = INVITE.venue.address;
+    document.getElementById('dress').textContent = INVITE.dress;
+
+    const mapURL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(INVITE.venue.name + ' ' + INVITE.venue.address)}`;
+    const mapBtn = document.getElementById('mapBtn'); mapBtn.href = mapURL;
+
+    const rsvpBtn = document.getElementById('rsvpBtn');
+    if (INVITE.rsvp.url && INVITE.rsvp.url.startsWith('http')) { rsvpBtn.href = INVITE.rsvp.url; }
+    else { rsvpBtn.href = `mailto:${INVITE.rsvp.email}?subject=${encodeURIComponent('RSVP: '+INVITE.couple.a+' & '+INVITE.couple.b)}`; }
+
+    const registryLink = document.getElementById('registryLink');
+    if (INVITE.registry && INVITE.registry.startsWith('http')) { registryLink.href = INVITE.registry; }
+    else { registryLink.closest('.tile').style.display = 'none'; }
+
+    const emailLink = document.getElementById('emailLink');
+    if (INVITE.rsvp.email) emailLink.href = `mailto:${INVITE.rsvp.email}`;
+
+    // Countdown
+    const countdownEl = document.getElementById('countdown');
+    function updateCountdown(){
+      const now = new Date();
+      const target = new Date(INVITE.start);
+      const ms = target - now;
+      if (ms <= 0) { countdownEl.textContent = "It's today!"; return; }
+      const d = Math.floor(ms/86400000);
+      const h = Math.floor((ms%86400000)/3600000);
+      const m = Math.floor((ms%3600000)/60000);
+      countdownEl.textContent = `${d} days • ${h} hours • ${m} minutes to go`;
+    }
+    updateCountdown(); setInterval(updateCountdown, 30000);
+
+    // ICS download
+    document.getElementById('icsBtn').addEventListener('click', () => {
+      const ics = buildICS();
+      const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `${INVITE.couple.a}-${INVITE.couple.b}-Wedding.ics`;
+      document.body.appendChild(a); a.click(); a.remove();
+    });
+
+    function pad(n){ return String(n).padStart(2,'0'); }
+    function toICS(dt){
+      const d = new Date(dt);
+      return d.getUTCFullYear()+pad(d.getUTCMonth()+1)+pad(d.getUTCDate())+'T'+pad(d.getUTCHours())+pad(d.getUTCMinutes())+pad(d.getUTCSeconds())+'Z';
+    }
+    function foldLine(s){ // ICS long line folding
+      return s.replace(/(.{1,73})(?=.)/g,"$1\r\n ");
+    }
+    function esc(s){ return String(s).replace(/[\\,;]/g, m => ({'\\':'\\\\', ',':'\\,',';':'\\;'}[m])); }
+    function buildICS(){
+      const now = toICS(new Date());
+      const dtStart = toICS(new Date(INVITE.start));
+      const dtEnd   = toICS(new Date(INVITE.end));
+      const summary = `${INVITE.couple.a} & ${INVITE.couple.b} – Wedding`;
+      const desc = `Ceremony & Reception. Dress: ${INVITE.dress}.`;
+      const loc = `${INVITE.venue.name}, ${INVITE.venue.address}`;
+
+      const lines = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//Custom Wedding Invite//EN',
+        'CALSCALE:GREGORIAN',
+        'METHOD:PUBLISH',
+        'BEGIN:VEVENT',
+        'DTSTAMP:'+now,
+        'DTSTART:'+dtStart,
+        'DTEND:'+dtEnd,
+        foldLine('SUMMARY:'+esc(summary)),
+        foldLine('DESCRIPTION:'+esc(desc)),
+        foldLine('LOCATION:'+esc(loc)),
+        'END:VEVENT',
+        'END:VCALENDAR'
+      ];
+      return lines.join('\r\n');
+    }
+
+    // Decorative falling petals
+    const petals = document.getElementById('petals');
+    for (let i=0; i<24; i++){
+      const el = document.createElement('div');
+      el.className = 'petal';
+      const left = Math.random()*100; const delay = Math.random()*8; const dur = 9 + Math.random()*8;
+      el
+    
